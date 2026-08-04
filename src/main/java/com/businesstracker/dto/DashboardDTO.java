@@ -6,6 +6,7 @@ public class DashboardDTO {
     private Double totalIncome;
     private Double totalExpense;
     private Double totalProfit;
+    private Double totalDueAmount;
     private Long paidCustomers;
     private Long unpaidCustomers;
 
@@ -17,13 +18,16 @@ public class DashboardDTO {
                         Double totalExpense,
                         Double totalProfit,
                         Long paidCustomers,
-                        Long unpaidCustomers) {
+                        Long unpaidCustomers,
+                        Double totalDueAmount) {
+
         this.totalCustomers = totalCustomers;
         this.totalIncome = totalIncome;
         this.totalExpense = totalExpense;
         this.totalProfit = totalProfit;
         this.paidCustomers = paidCustomers;
         this.unpaidCustomers = unpaidCustomers;
+        this.totalDueAmount = totalDueAmount;
     }
 
     public Long getTotalCustomers() {
@@ -56,6 +60,14 @@ public class DashboardDTO {
 
     public void setTotalProfit(Double totalProfit) {
         this.totalProfit = totalProfit;
+    }
+
+    public Double getTotalDueAmount() {
+        return totalDueAmount;
+    }
+
+    public void setTotalDueAmount(Double totalDueAmount) {
+        this.totalDueAmount = totalDueAmount;
     }
 
     public Long getPaidCustomers() {

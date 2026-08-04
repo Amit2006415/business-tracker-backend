@@ -28,6 +28,7 @@ public class DashboardService {
 
         Double totalIncome = 0.0;
         Double totalExpense = 0.0;
+        Double totalDueAmount = 0.0;
 
         Long paidCustomers = 0L;
         Long unpaidCustomers = 0L;
@@ -35,6 +36,10 @@ public class DashboardService {
         for (Customer customer : customers) {
 
             totalIncome += customer.getTotalAmount();
+
+            if (customer.getDueAmount() != null) {
+                totalDueAmount += customer.getDueAmount();
+            }
 
             if ("Paid".equalsIgnoreCase(customer.getPaymentStatus())) {
                 paidCustomers++;
@@ -50,12 +55,14 @@ public class DashboardService {
         Double totalProfit = totalIncome - totalExpense;
 
         return new DashboardDTO(
+            
                 totalCustomers,
                 totalIncome,
                 totalExpense,
                 totalProfit,
                 paidCustomers,
-                unpaidCustomers
+                unpaidCustomers,
+                totalDueAmount
         );
     }
 }
