@@ -1,22 +1,20 @@
 package com.businesstracker.repository;
 
-import com.businesstracker.entity.Customer;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.List;
+import com.businesstracker.entity.Customer;
+import com.businesstracker.entity.User;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    // Find Customer by Name
-    Customer findByCustomerName(String customerName);
+    // Get all customers of a specific user
+    List<Customer> findByUser(User user);
 
-    // Find Customers by Payment Status
-    List<Customer> findByPaymentStatus(String paymentStatus);
-
-    // Find Customers Between Dates
-    List<Customer> findByWorkDateBetween(LocalDate startDate, LocalDate endDate);
+    // Get customers by payment status of a specific user
+    List<Customer> findByUserAndPaymentStatus(User user, String paymentStatus);
 
 }
