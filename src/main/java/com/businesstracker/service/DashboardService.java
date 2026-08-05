@@ -1,14 +1,15 @@
 package com.businesstracker.service;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.businesstracker.dto.DashboardDTO;
 import com.businesstracker.entity.Customer;
 import com.businesstracker.entity.Expense;
 import com.businesstracker.repository.CustomerRepository;
 import com.businesstracker.repository.ExpenseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class DashboardService {
@@ -53,6 +54,7 @@ public class DashboardService {
         }
 
         Double totalProfit = totalIncome - totalExpense;
+        Double currentProfit = totalIncome - totalDueAmount;
 
         return new DashboardDTO(
             
@@ -62,7 +64,8 @@ public class DashboardService {
                 totalProfit,
                 paidCustomers,
                 unpaidCustomers,
-                totalDueAmount
+                totalDueAmount,
+                currentProfit
         );
     }
 }
