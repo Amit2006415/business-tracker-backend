@@ -14,6 +14,23 @@ public class AdminService {
     private AdminRepository adminRepository;
 
     // =====================================
+    // Register
+    // =====================================
+
+    public Admin saveAdmin(Admin admin) {
+
+        if (adminRepository.existsByEmail(admin.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        if (adminRepository.existsByMobile(admin.getMobile())) {
+            throw new RuntimeException("Mobile number already exists");
+        }
+
+        return adminRepository.save(admin);
+    }
+
+    // =====================================
     // Login
     // =====================================
 
@@ -29,23 +46,34 @@ public class AdminService {
     }
 
     // =====================================
-    // Register
-    // =====================================
-
-    public Admin saveAdmin(Admin admin) {
-        return adminRepository.save(admin);
-    }
-
-    // =====================================
     // Find Admin
     // =====================================
 
     public Admin findByEmail(String email) {
+
         return adminRepository.findByEmail(email);
+
     }
 
     // =====================================
-    // Forgot Password / Change Password
+    // Verify Security Answer
+    // =====================================
+
+    public boolean verifySecurityAnswer(String email, String answer) {
+
+        Admin admin = adminRepository.findByEmail(email);
+
+        if (admin == null) {
+            return false;
+        }
+
+        return admin.getSecurityAnswer()
+                .equalsIgnoreCase(answer.trim());
+
+    }
+
+    // =====================================
+    // Change Password
     // =====================================
 
     public String changePassword(ChangePasswordRequest request) {
@@ -61,6 +89,7 @@ public class AdminService {
         adminRepository.save(admin);
 
         return "Password Updated Successfully";
+
     }
 
 }
