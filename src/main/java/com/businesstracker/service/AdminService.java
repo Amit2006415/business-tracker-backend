@@ -19,6 +19,13 @@ public class AdminService {
 
     public Admin saveAdmin(Admin admin) {
 
+        admin.setFullName(admin.getFullName().trim());
+        admin.setEmail(admin.getEmail().trim().toLowerCase());
+        admin.setMobile(admin.getMobile().trim());
+        admin.setPassword(admin.getPassword().trim());
+        admin.setSecurityQuestion(admin.getSecurityQuestion().trim());
+        admin.setSecurityAnswer(admin.getSecurityAnswer().trim());
+
         if (adminRepository.existsByEmail(admin.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
@@ -36,13 +43,14 @@ public class AdminService {
 
     public boolean login(String email, String password) {
 
-        Admin admin = adminRepository.findByEmail(email);
+        Admin admin = adminRepository.findByEmail(email.trim().toLowerCase());
 
         if (admin == null) {
             return false;
         }
 
-        return admin.getPassword().equals(password);
+        return admin.getPassword().equals(password.trim());
+
     }
 
     // =====================================
@@ -51,7 +59,7 @@ public class AdminService {
 
     public Admin findByEmail(String email) {
 
-        return adminRepository.findByEmail(email);
+        return adminRepository.findByEmail(email.trim().toLowerCase());
 
     }
 
@@ -61,7 +69,7 @@ public class AdminService {
 
     public boolean verifySecurityAnswer(String email, String answer) {
 
-        Admin admin = adminRepository.findByEmail(email);
+        Admin admin = adminRepository.findByEmail(email.trim().toLowerCase());
 
         if (admin == null) {
             return false;
@@ -78,18 +86,16 @@ public class AdminService {
 
     public String changePassword(ChangePasswordRequest request) {
 
-        Admin admin = adminRepository.findByEmail(request.getEmail());
+        Admin admin = adminRepository.findByEmail(request.getEmail().trim().toLowerCase());
 
         if (admin == null) {
             return "Email Not Found";
         }
 
-        admin.setPassword(request.getNewPassword());
+        admin.setPassword(request.getNewPassword().trim());
 
         adminRepository.save(admin);
 
         return "Password Updated Successfully";
-
     }
-
 }

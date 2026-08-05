@@ -1,6 +1,7 @@
 package com.businesstracker.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,9 +29,19 @@ public class AdminController {
     // ==========================================
 
     @PostMapping("/register")
-    public Admin register(@RequestBody Admin admin) {
+    public ResponseEntity<?> register(@RequestBody Admin admin) {
 
-        return adminService.saveAdmin(admin);
+        try {
+
+            Admin savedAdmin = adminService.saveAdmin(admin);
+
+            return ResponseEntity.ok(savedAdmin);
+
+        } catch (RuntimeException e) {
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+
+        }
 
     }
 
@@ -39,18 +50,19 @@ public class AdminController {
     // ==========================================
 
     @PostMapping("/login")
-    public String login(@RequestBody Admin admin) {
+    public ResponseEntity<String> login(@RequestBody Admin admin) {
 
         boolean success = adminService.login(
                 admin.getEmail(),
-                admin.getPassword()
-        );
+                admin.getPassword());
 
         if (success) {
-            return "Login Successful";
+            return ResponseEntity.ok("Login Successful");
         }
 
-        return "Invalid Email or Password";
+        return ResponseEntity.badRequest()
+                .body("Invalid Email or Password");
+
     }
 
     // ==========================================
@@ -58,9 +70,16 @@ public class AdminController {
     // ==========================================
 
     @GetMapping("/{email}")
-    public Admin getAdmin(@PathVariable String email) {
+    public ResponseEntity<?> getAdmin(@PathVariable String email) {
 
-        return adminService.findByEmail(email);
+        Admin admin = adminService.findByEmail(email);
+
+        if (admin == null) {
+            return ResponseEntity.badRequest()
+                    .body("Email Not Found");
+        }
+
+        return ResponseEntity.ok(admin);
 
     }
 
@@ -69,15 +88,17 @@ public class AdminController {
     // ==========================================
 
     @GetMapping("/security-question/{email}")
-    public String getSecurityQuestion(@PathVariable String email) {
+    public ResponseEntity<String> getSecurityQuestion(
+            @PathVariable String email) {
 
         Admin admin = adminService.findByEmail(email);
 
         if (admin == null) {
-            return "Email Not Found";
+            return ResponseEntity.badRequest()
+                    .body("Email Not Found");
         }
 
-        return admin.getSecurityQuestion();
+        return ResponseEntity.ok(admin.getSecurityQuestion());
 
     }
 
@@ -86,7 +107,7 @@ public class AdminController {
     // ==========================================
 
     @PostMapping("/verify-answer")
-    public String verifyAnswer(
+    public ResponseEntity<String> verifyAnswer(
             @RequestParam String email,
             @RequestParam String answer) {
 
@@ -94,10 +115,11 @@ public class AdminController {
                 adminService.verifySecurityAnswer(email, answer);
 
         if (verified) {
-            return "Verified";
+            return ResponseEntity.ok("Verified");
         }
 
-        return "Invalid Answer";
+        return ResponseEntity.badRequest()
+                .body("Invalid Answer");
 
     }
 
@@ -106,10 +128,12 @@ public class AdminController {
     // ==========================================
 
     @PutMapping("/change-password")
-    public String changePassword(
+    public ResponseEntity<String> changePassword(
             @RequestBody ChangePasswordRequest request) {
 
-        return adminService.changePassword(request);
+        String message = adminService.changePassword(request);
+
+        return ResponseEntity.ok(message);
 
     }
 
