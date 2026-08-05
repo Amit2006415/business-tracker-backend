@@ -7,8 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,14 +16,6 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    // ============================
-    // Logged-in User
-    // ============================
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
 
     @Column(nullable = false)
     private String customerName;
@@ -51,7 +41,6 @@ public class Customer {
     }
 
     public Customer(Long id,
-                    User user,
                     String customerName,
                     LocalDate workDate,
                     String product,
@@ -62,7 +51,6 @@ public class Customer {
                     String imagePath) {
 
         this.id = id;
-        this.user = user;
         this.customerName = customerName;
         this.workDate = workDate;
         this.product = product;
@@ -81,22 +69,6 @@ public class Customer {
         this.id = id;
     }
 
-    // ============================
-    // User
-    // ============================
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    // ============================
-    // Customer Name
-    // ============================
-
     public String getCustomerName() {
         return customerName;
     }
@@ -104,10 +76,6 @@ public class Customer {
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
-
-    // ============================
-    // Work Date
-    // ============================
 
     public LocalDate getWorkDate() {
         return workDate;
@@ -117,10 +85,6 @@ public class Customer {
         this.workDate = workDate;
     }
 
-    // ============================
-    // Product
-    // ============================
-
     public String getProduct() {
         return product;
     }
@@ -128,10 +92,6 @@ public class Customer {
     public void setProduct(String product) {
         this.product = product;
     }
-
-    // ============================
-    // Total Amount
-    // ============================
 
     public Double getTotalAmount() {
         return totalAmount;
@@ -141,10 +101,6 @@ public class Customer {
         this.totalAmount = totalAmount;
     }
 
-    // ============================
-    // Advance Payment
-    // ============================
-
     public Double getAdvancePayment() {
         return advancePayment;
     }
@@ -152,10 +108,6 @@ public class Customer {
     public void setAdvancePayment(Double advancePayment) {
         this.advancePayment = advancePayment;
     }
-
-    // ============================
-    // Due Amount
-    // ============================
 
     public Double getDueAmount() {
         return dueAmount;
@@ -165,10 +117,6 @@ public class Customer {
         this.dueAmount = dueAmount;
     }
 
-    // ============================
-    // Payment Status
-    // ============================
-
     public String getPaymentStatus() {
         return paymentStatus;
     }
@@ -177,10 +125,6 @@ public class Customer {
         this.paymentStatus = paymentStatus;
     }
 
-    // ============================
-    // Image
-    // ============================
-
     public String getImagePath() {
         return imagePath;
     }
@@ -188,5 +132,4 @@ public class Customer {
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
-
 }
