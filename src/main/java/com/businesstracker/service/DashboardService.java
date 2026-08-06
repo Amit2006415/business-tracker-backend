@@ -36,7 +36,9 @@ public class DashboardService {
 
         for (Customer customer : customers) {
 
-            totalIncome += customer.getTotalAmount();
+            if (customer.getTotalAmount() != null) {
+                totalIncome += customer.getTotalAmount();
+            }
 
             if (customer.getDueAmount() != null) {
                 totalDueAmount += customer.getDueAmount();
@@ -50,14 +52,21 @@ public class DashboardService {
         }
 
         for (Expense expense : expenses) {
-            totalExpense += expense.getAmount();
+
+            if (expense.getAmount() != null) {
+                totalExpense += expense.getAmount();
+            }
         }
 
-        Double totalProfit = totalIncome - totalExpense;
+        // Business Logic
+
+        // Total Profit = Total Income
+        Double totalProfit = totalIncome;
+
+        // Current Profit = Amount Received
         Double currentProfit = totalIncome - totalDueAmount;
 
         return new DashboardDTO(
-            
                 totalCustomers,
                 totalIncome,
                 totalExpense,
